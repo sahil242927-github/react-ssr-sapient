@@ -1,33 +1,42 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../src/actions';
+import { fetchNews } from '../src/actions';
 
 const Home = (props) => {
   useEffect(() => {
-    fetchUsers();
+    fetchNews();
   }, []);
 
-  const renderUsers = () => {
-    return props.users.map((user) => <li key={user.id}>{user.name}</li>);
+  const renderNews = () => {
+    return props.news.map((news) => (
+      <li key={news.objectID}>
+        <span>{news.num_comments}</span>
+        <span>{news.points}</span>
+        <span>
+          {news.title} by {news.author}
+        </span>
+      </li>
+    ));
   };
 
   return (
     <div>
-      Here is list of users
-      <ul>{renderUsers()}</ul>
+      Here is list of News
+      <ul>{renderNews()}</ul>
     </div>
   );
 };
 
 const loadData = (store) => {
-  return store.dispatch(fetchUsers());
+  return store.dispatch(fetchNews());
 };
 
 const mapStateToProps = (state) => {
-  return { users: state.users };
+  console.log(state.news);
+  return { news: state.news.hits };
 };
 
 export default {
-  component: connect(mapStateToProps, { fetchUsers })(Home),
+  component: connect(mapStateToProps, { fetchNews })(Home),
   loadData,
 };
