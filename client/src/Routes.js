@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
 //import { Route } from 'react-router-dom';
 
-import Home from './components/Home';
-import UsersList from './components/UsersList';
+import Home from '../pages/HomePage';
+import UsersList from '../pages/UsersList';
 
 /* export default () => (
   <div>
@@ -14,12 +15,11 @@ import UsersList from './components/UsersList';
 
 export default [
   {
-    path: '/',
-    component: Home,
-    exact: true,
+    ...UsersList,
+    path: '/users',
   },
   {
-    path: '/users',
-    component: UsersList,
+    ...Home,
+    exact: true,
   },
 ];
