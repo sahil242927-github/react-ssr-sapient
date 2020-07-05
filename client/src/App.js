@@ -5,7 +5,7 @@ import Routes from './Routes';
 import './App.css';
 
 function App() {
-  return <div className='App'>{renderRoutes(Routes)}</div>;
+  return <div className='container'>{renderRoutes(Routes)}</div>;
 }
 
 export default App;

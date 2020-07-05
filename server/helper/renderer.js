@@ -19,7 +19,9 @@ export default (req, store) => {
   // sending the javascript file so the browser will laod it on client side
   return `
     <html>
-       <head><head>
+       <head>
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+       </head>
        <body>
         <div id="root">${content}</div>
         <script>
