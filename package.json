@@ -8,7 +8,8 @@
     "dev:build-client": "webpack --config webpack.client.js --mode=development --watch",
     "dev:build-server": "webpack --config webpack.server.js --mode=development --watch",
     "test": "jest",
-    "start": "npm-run-all --parallel dev:*"
+    "start": "npm-run-all --parallel dev:*",
+    "heroku-postbuild": "npm run dev && cd client && npm install --only=dev:* --no-shrinkwrap"
   },
   "author": "Mohd Sahil",
   "license": "ISC",
