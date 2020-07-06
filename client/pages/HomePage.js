@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Line } from 'react-chartjs-2';
+
 import { fetchNews, prevAction, nextAction } from '../src/actions';
+import Chart from '../src/components/Chart';
 
 const styles = {
   tableHeader: {
@@ -14,21 +17,31 @@ const styles = {
 };
 
 const Home = ({ news, currentPage, prevAction, nextAction }) => {
+  // chart data
+  const points = [];
+  const ids = [];
+
   useEffect(() => {
     fetchNews();
   }, []);
 
   const renderNews = () => {
-    const tableBody = news.map((news) => (
-      <tr key={news.objectID}>
-        <th scope='row'>1</th>
-        <td>{news.num_comments}</td>
-        <td>{news.points}</td>
-        <td>
-          {news.title} by {news.author}
-        </td>
-      </tr>
-    ));
+    const tableBody = news.map((news) => {
+      // filling chart data here saves a loop
+      ids.push(news.objectID);
+      points.push(news.points);
+
+      return (
+        <tr key={news.objectID}>
+          <th scope='row'>1</th>
+          <td>{news.num_comments}</td>
+          <td>{news.points}</td>
+          <td>
+            {news.title} by {news.author}
+          </td>
+        </tr>
+      );
+    });
 
     return (
       <table className='table table-striped'>
@@ -50,31 +63,40 @@ const Home = ({ news, currentPage, prevAction, nextAction }) => {
       Here is list of News
       {renderNews()}
       <div style={styles.buttonContainer}>
-        <button
-          type='button'
-          className='btn btn-primary mr-1'
-          onClick={() => prevAction()}
-        >
-          Prev
-        </button>
+        {currentPage ? (
+          <button
+            type='button'
+            className='btn btn-primary mr-1'
+            onClick={() => prevAction(currentPage)}
+          >
+            Prev
+          </button>
+        ) : (
+          ''
+        )}
+
         <button
           type='button'
           className='btn btn-danger'
-          onClick={() => nextAction()}
+          onClick={() => nextAction(currentPage)}
         >
           Next
         </button>
+      </div>
+      <div style={{ height: '500px', width: '100%' }}>
+        <Chart points={points} ids={ids} />
       </div>
     </div>
   );
 };
 
 const loadData = (store) => {
-  return store.dispatch(fetchNews(store.getState().currentPage));
+  return store.dispatch(fetchNews(store.getState().news.currentPage));
 };
 
 const mapStateToProps = (state) => {
-  return { news: state.news.hits, currentPage: state.currentPage };
+  console.log(state.news);
+  return { news: state.news.hits, currentPage: state.news.currentPage };
 };
 
 export default {
@@ -82,4 +104,8 @@ export default {
     Home
   ),
   loadData,
+};
+
+Home.defaultProps = {
+  currentPage: 0,
 };
